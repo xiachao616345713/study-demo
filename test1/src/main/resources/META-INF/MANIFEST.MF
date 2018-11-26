@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Main-Class: study.test1.bytebuddy.TestMain
