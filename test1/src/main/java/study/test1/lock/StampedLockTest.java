@@ -1,5 +1,8 @@
 package study.test1.lock;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
 import java.util.concurrent.locks.StampedLock;
 
 /**
@@ -63,6 +66,11 @@ public class StampedLockTest {
         Thread.sleep(1000);
         new Thread(() ->
                 System.out.println(test.access())).start();
+
+        ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+        for (ThreadInfo threadInfo : threadMXBean.getThreadInfo(threadMXBean.getAllThreadIds())) {
+            System.out.println(threadInfo.getThreadId() + ":" + threadInfo.getThreadName());
+        }
     }
 
 }
