@@ -12,6 +12,9 @@
         <module>test1</module>
         <module>bytebuddy</module>
         <module>leetcode</module>
+        <module>data-structure</module>
+        <module>websocket</module>
+        <module>exchange-api</module>
     </modules>
 
     <build>

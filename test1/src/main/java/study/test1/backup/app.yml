@@ -1,0 +1,24 @@
+spring:
+  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      # https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing 线程池设置
+      #maximum-pool-size: 50
+      #minimum-idle: 10
+      # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby  属性配置
+      #connection-test-query: "select 1"
+      #idle-timeout: 25000000
+      max-lifetime: 28700000
+      #validation-timeout: 60000
+      # https://github.com/brettwooldridge/HikariCP/wiki/MySQL-Configuration  mysql-tips
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
