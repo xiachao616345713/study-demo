@@ -17,9 +17,9 @@ import java.util.Stack;
 public class Solution301 {
 
     public static void main(String[] args) {
-        String str = "()())()";
+        //String str = "()())()";
         //String str = "(a)())()";
-        //String str = ")(";
+        String str = ")(";
         List<String> list = removeInvalidParentheses(str);
         list.forEach(System.out::println);
     }
@@ -62,6 +62,9 @@ public class Solution301 {
         return list;
     }
 
+    /**
+     * 删除无效的字符串
+     */
     private static String remove(String s) {
         if (s.length() <= 0) {
             return "";
@@ -116,6 +119,18 @@ public class Solution301 {
         return ret.toString();
     }
 
+    /**
+     * 可能结果
+     *
+     * @param list 结果
+     * @param s 原字符串
+     * @param result 递归中结果
+     * @param index index
+     * @param deleteLeft 左括号删除数
+     * @param deleteRight  右括号删除数
+     * @param minDeleteLeft 左括号最小删除数
+     * @param minDeleteRight 右括号最小删除数
+     */
     private static void recursion(List<String> list, String s, String result, int index, int deleteLeft, int deleteRight, int minDeleteLeft, int minDeleteRight) {
         if (deleteLeft > minDeleteLeft) return;
         if (deleteRight > minDeleteRight) return;
@@ -134,12 +149,14 @@ public class Solution301 {
                 c = s.charAt(i);
                 if (c == '(') {
                     recursion(list, s, result + c, i + 1, deleteLeft, deleteRight, minDeleteLeft, minDeleteRight);
-                    recursion(list, s, result, i + 1, deleteLeft + 1, deleteRight, minDeleteLeft, minDeleteRight);
-                    break;
+                    deleteLeft++;
+//                    recursion(list, s, result, i + 1, deleteLeft + 1, deleteRight, minDeleteLeft, minDeleteRight);
+//                    break;
                 } else if (c == ')') {
                     recursion(list, s, result + c, i + 1, deleteLeft, deleteRight, minDeleteLeft, minDeleteRight);
-                    recursion(list, s, result, i + 1, deleteLeft, deleteRight + 1, minDeleteLeft, minDeleteRight);
-                    break;
+                    deleteRight++;
+//                    recursion(list, s, result, i + 1, deleteLeft, deleteRight + 1, minDeleteLeft, minDeleteRight);
+//                    break;
                 } else {
                     result = result + c;
                 }
