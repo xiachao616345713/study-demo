@@ -7,7 +7,7 @@ import java.util.Stack;
 
 /**
  * <p>
- * 718. Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible results.
+ * 301. Remove the minimum number of invalid parentheses in order to make the input string valid. Return all possible results.
  * </p>
  *
  * @author chao
@@ -77,8 +77,7 @@ public class Solution301 {
             if (stack.size() == 0) {
                 if (c == '(') {
                     stack.push(c);
-                } else if (c == ')') {
-                } else {
+                } else if (c != ')') {
                     ret.append(c);
                 }
             } else {
@@ -145,22 +144,24 @@ public class Solution301 {
         } else {
             Character c;
             int i;
+            StringBuilder resultBuilder = new StringBuilder(result);
             for (i = index; i < s.length(); i++) {
                 c = s.charAt(i);
                 if (c == '(') {
-                    recursion(list, s, result + c, i + 1, deleteLeft, deleteRight, minDeleteLeft, minDeleteRight);
+                    recursion(list, s, resultBuilder.toString() + c, i + 1, deleteLeft, deleteRight, minDeleteLeft, minDeleteRight);
                     deleteLeft++;
 //                    recursion(list, s, result, i + 1, deleteLeft + 1, deleteRight, minDeleteLeft, minDeleteRight);
 //                    break;
                 } else if (c == ')') {
-                    recursion(list, s, result + c, i + 1, deleteLeft, deleteRight, minDeleteLeft, minDeleteRight);
+                    recursion(list, s, resultBuilder.toString() + c, i + 1, deleteLeft, deleteRight, minDeleteLeft, minDeleteRight);
                     deleteRight++;
 //                    recursion(list, s, result, i + 1, deleteLeft, deleteRight + 1, minDeleteLeft, minDeleteRight);
 //                    break;
                 } else {
-                    result = result + c;
+                    resultBuilder.append(c);
                 }
             }
+            result = resultBuilder.toString();
             if (i == s.length() && deleteLeft == minDeleteLeft && deleteRight == minDeleteRight) {
                 if (!list.contains(result)) {
                     list.add(result);
