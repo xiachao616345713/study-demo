@@ -1,10 +1,9 @@
-package study.tree;
+package study.test1.tree;
 
 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import lombok.Getter;
 import lombok.Setter;
 
