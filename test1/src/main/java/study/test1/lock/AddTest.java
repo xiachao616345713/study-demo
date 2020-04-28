@@ -1,7 +1,11 @@
 package study.test1.lock;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -9,8 +13,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 2018-12-13
  */
 public class AddTest {
-
-    private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
     private static int num = 0;
 
@@ -34,10 +36,18 @@ public class AddTest {
 //    }
 
     public static void main(String[] args) throws InterruptedException {
+        ThreadPoolExecutor execute = new ThreadPoolExecutor(
+            10, 50,
+            60L, TimeUnit.SECONDS,
+            new ArrayBlockingQueue<>(1000),
+            new ThreadFactoryBuilder().setNameFormat("test-th-pool-%s")
+                .setUncaughtExceptionHandler((t, e) -> e.printStackTrace()).build(),
+            new ThreadPoolExecutor.CallerRunsPolicy());
+
         long start = System.currentTimeMillis();
 
         for (int i = 0; i < 10000000; i++) {
-            executorService.submit(AddTest::addSynchronized);
+            execute.submit(AddTest::addSynchronized);
         }
         while (num != 10000000) {
 
@@ -45,14 +55,14 @@ public class AddTest {
         System.out.println(System.currentTimeMillis() - start);
         Thread.sleep(1000);
         System.out.println(num);
-        executorService.shutdown();
+        execute.shutdown();
     }
 
     private static final ReentrantLock lock = new ReentrantLock();
 
     private static void addSynchronized() {
+        lock.lock();
         try {
-            lock.lock();
             num++;
         } finally {
             lock.unlock();

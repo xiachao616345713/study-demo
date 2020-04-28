@@ -24,6 +24,14 @@
       <artifactId>lombok</artifactId>
       <version>1.16.20</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.62</version>
+    </dependency>
+
   </dependencies>
 
 </project>
