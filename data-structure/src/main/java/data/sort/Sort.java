@@ -109,18 +109,18 @@ public class Sort {
     }
 
     /**
-     * <p>
-     *     6,11,3,9,8  a[p]=pivot=8,p=4
-     *     step1:6,11,3,9,8  a[i]=a[j]=6 (a[j]<8,swap a[i] a[j])
-     *     step2:6,11,3,9,8  a[i]=a[j]=11
-     *     step3:6,11,3,9,8  a[i]=11,a[j]=3 (a[j]<8,swap a[i] a[j])
-     *     step4:6,3,11,9,8  a[i]=11,a[j]=9
-     *     step5:6,3,11,9,8  a[i]=11,a[j]=8
-     *     final: swap a[i] a[p]  6,3,8,9,11
-     *     以8作为区分点，小于i坐标的数据为处理过的数据(即小于8的数据)，
-     *     最后交换a[i]和a[p]，pivot左侧数据小于pivot，pivot右侧数据大于等于pivot,
-     *     返回i为区分点位置
-     * </p>
+     * <pre>
+     * 6,11,3,9,8  a[p]=pivot=8,p=4
+     * step1:6,11,3,9,8  a[i]=a[j]=6 (a[j]<8,swap a[i] a[j])
+     * step2:6,11,3,9,8  a[i]=a[j]=11
+     * step3:6,11,3,9,8  a[i]=11,a[j]=3 (a[j]<8,swap a[i] a[j])
+     * step4:6,3,11,9,8  a[i]=11,a[j]=9
+     * step5:6,3,11,9,8  a[i]=11,a[j]=8
+     * final: swap a[i] a[p]  6,3,8,9,11
+     * 以8作为区分点，小于i坐标的数据为处理过的数据(即小于8的数据)，
+     * 最后交换a[i]和a[p]，pivot左侧数据小于pivot，pivot右侧数据大于等于pivot,
+     * 返回i为区分点位置
+     * </pre>
      */
     private int swap(int[] a, int start, int end, int p) {
         //int i = start, j = start;
