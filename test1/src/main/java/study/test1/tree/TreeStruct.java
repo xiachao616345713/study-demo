@@ -1,8 +1,11 @@
 package study.test1.tree;
 
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +36,7 @@ public class TreeStruct {
         Queue<TreeStruct> queue = new LinkedList<>();
         queue.offer(this);
         TreeStruct temp;
-        while (queue.size() > 0) {
+        while (!queue.isEmpty()) {
             temp = queue.poll();
             assert temp != null;
             System.out.println(temp.value);
@@ -50,7 +53,7 @@ public class TreeStruct {
         Queue<TreeStruct> queue = new LinkedList<>();
         queue.offer(this);
         TreeStruct temp;
-        while (queue.size() > 0) {
+        while (!queue.isEmpty()) {
             temp = queue.poll();
             assert temp != null;
             consumer.accept(temp.value);
@@ -74,11 +77,81 @@ public class TreeStruct {
      */
     private void travelRecursion(TreeStruct node) {
         if (node != null) {
-            System.out.println(node.value);
+            System.out.print(node.value + ",");
             travelRecursion(node.getLeft());
             travelRecursion(node.getRight());
         }
     }
+
+    public void travelNoRecursion() {
+        travelNoRecursion(this);
+    }
+
+    /**
+     * 前序遍历无递归
+     * @param node
+     */
+    private void travelNoRecursion(TreeStruct node) {
+        Deque<TreeStruct> stack = new ArrayDeque<>();
+        while (node != null || !stack.isEmpty()) {
+            while (node != null) {
+                System.out.print(node.value + ",");
+                stack.push(node);
+                node = node.left;
+            }
+            if (!stack.isEmpty()) {
+                node = stack.pop().right;
+            }
+        }
+    }
+
+
+    // ====== 后续遍历 start =====
+
+    public void travelAfter() {
+        travelRecursionAfter(this);
+    }
+
+    private void travelRecursionAfter(TreeStruct node) {
+        if (node != null) {
+            travelRecursionAfter(node.getLeft());
+            travelRecursionAfter(node.getRight());
+            System.out.print(node.value + ",");
+        }
+    }
+
+    public void travelAfterNoRecursion() {
+        travelAfterNoRecursion(this);
+    }
+
+    /**
+     * 前序遍历无递归
+     * @param node
+     */
+    private void travelAfterNoRecursion(TreeStruct node) {
+        Deque<TreeStruct> stack = new ArrayDeque<>();
+        stack.push(node);
+        Deque<TreeStruct> ret = new ArrayDeque<>();
+        TreeStruct tmp;
+        while (!stack.isEmpty()) {
+            tmp = stack.pop();
+
+            ret.push(tmp);
+            // 先入后出，stack左节先入，后压入结果栈，最后输出先输出(模拟递归)
+            if (tmp.getLeft() != null) {
+                stack.push(tmp.getLeft());
+            }
+            if (tmp.getRight() != null) {
+                stack.push(tmp.getRight());
+            }
+        }
+        while (!ret.isEmpty()) {
+            System.out.print(ret.pop().value + ",");
+        }
+    }
+
+
+    // ====== 后续遍历 end =====
 
     /**
      * 查找

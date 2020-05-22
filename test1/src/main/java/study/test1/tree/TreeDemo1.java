@@ -42,30 +42,48 @@ public class TreeDemo1 {
         System.out.println("==========");
         System.out.println(treeStruct.height());
 
-        treeStruct.deleteNode(13);
-        treeStruct.printByLayer(value -> System.out.print(value + ","));
-        System.out.println("==========");
-        System.out.println(treeStruct.height());
+        // 前序遍历
+        System.out.println("=====前序遍历=====");
 
-        treeStruct.deleteNode(18);
-        treeStruct.printByLayer(value -> System.out.print(value + ","));
+        treeStruct.travel();
         System.out.println("==========");
-        System.out.println(treeStruct.height());
 
-        treeStruct.deleteNode(33);
-        treeStruct.printByLayer(value -> System.out.print(value + ","));
+        treeStruct.travelNoRecursion();
         System.out.println("==========");
-        System.out.println(treeStruct.height());
 
-        treeStruct.deleteNode(27);
-        treeStruct.printByLayer(value -> System.out.print(value + ","));
-        System.out.println("==========");
-        System.out.println(treeStruct.height());
+        // 后序遍历
 
-        treeStruct.deleteNode(55);
-        treeStruct.printByLayer(value -> System.out.print(value + ","));
+        System.out.println("=====后序遍历=====");
+        treeStruct.travelAfter();
         System.out.println("==========");
-        System.out.println(treeStruct.height());
+
+        treeStruct.travelAfterNoRecursion();
+        System.out.println("==========");
+
+//        treeStruct.deleteNode(13);
+//        treeStruct.printByLayer(value -> System.out.print(value + ","));
+//        System.out.println("==========");
+//        System.out.println(treeStruct.height());
+//
+//        treeStruct.deleteNode(18);
+//        treeStruct.printByLayer(value -> System.out.print(value + ","));
+//        System.out.println("==========");
+//        System.out.println(treeStruct.height());
+//
+//        treeStruct.deleteNode(33);
+//        treeStruct.printByLayer(value -> System.out.print(value + ","));
+//        System.out.println("==========");
+//        System.out.println(treeStruct.height());
+//
+//        treeStruct.deleteNode(27);
+//        treeStruct.printByLayer(value -> System.out.print(value + ","));
+//        System.out.println("==========");
+//        System.out.println(treeStruct.height());
+//
+//        treeStruct.deleteNode(55);
+//        treeStruct.printByLayer(value -> System.out.print(value + ","));
+//        System.out.println("==========");
+//        System.out.println(treeStruct.height());
     }
 
 }
