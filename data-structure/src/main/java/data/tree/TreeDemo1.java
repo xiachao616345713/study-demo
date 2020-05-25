@@ -1,4 +1,4 @@
-package study.test1.tree;
+package data.tree;
 
 /**
  * 按层输出
