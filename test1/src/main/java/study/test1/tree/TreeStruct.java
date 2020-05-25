@@ -283,7 +283,7 @@ public class TreeStruct {
     }
 
     /**
-     * 数高
+     * 树高
      */
     public Integer height() {
         return height(this);
@@ -297,6 +297,32 @@ public class TreeStruct {
             Integer rightHeight = height(treeStruct.getRight());
             return leftHeight >= rightHeight ? leftHeight + 1 : rightHeight + 1;
         }
+    }
+
+    private Integer heightNoRecursion(TreeStruct treeStruct) {
+        Queue<TreeStruct> queue = new ArrayDeque<>();
+        queue.add(treeStruct);
+
+        int height = 0;
+
+        TreeStruct tmp;
+        while (!queue.isEmpty()) {
+            height++;
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                tmp = queue.remove();
+
+                if (tmp.getLeft() != null) {
+                    queue.add(tmp.getLeft());
+                }
+                if (tmp.getRight() != null) {
+                    queue.add(tmp.getRight());
+                }
+            }
+        }
+
+        return height;
     }
 
     // 给定n个数字多少种组合?
