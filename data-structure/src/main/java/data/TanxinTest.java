@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 /**
+ * 贪心
+ *
  * @author xiachao
  * @date 2020/05/29
  */
