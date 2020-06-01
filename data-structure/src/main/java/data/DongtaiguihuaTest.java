@@ -40,12 +40,12 @@ public class DongtaiguihuaTest {
 
             // 最后一个(先放后面的，再放前面的)
             allPath[tmp.length - 1] = allPath[tmp.length - 2] + tmp[tmp.length - 1];
-            // 第一个
-            allPath[0] = allPath[0] + tmp[0];
             // 其他的2选1，取路径短的
             for (int i = tmp.length - 2; i > 0; i--) {
                 allPath[i] = Math.min(allPath[i], allPath[i - 1]) + tmp[i];
             }
+            // 第一个
+            allPath[0] = allPath[0] + tmp[0];
         }
 
         int shortest = allPath[0];
