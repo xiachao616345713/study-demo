@@ -121,7 +121,7 @@ public class DongtaiguihuaTest {
         int k = 0;
 
         int tmp;
-        while (!phase[pay]) {
+        while (!phase[pay] && k <= pay) {
             for (int i = pay - 1; i >= 0; i--) {
                 if (phase[i]) {
                     // 清除前一阶段
@@ -136,6 +136,10 @@ public class DongtaiguihuaTest {
                 }
             }
             k++;
+        }
+
+        if (k > pay) {
+            return -1;
         }
 
         return k;
