@@ -61,14 +61,85 @@ public class DongtaiguihuaTest {
     }
 
     public static void main(String[] args) {
-        List<Integer[]> list = new ArrayList<>();
-        list.add(new Integer[]{5});
-        list.add(new Integer[]{7, 8});
-        list.add(new Integer[]{2, 3, 4});
-        list.add(new Integer[]{4, 9, 6, 1});
-        list.add(new Integer[]{2, 7, 9, 4, 5});
+//        List<Integer[]> list = new ArrayList<>();
+//        list.add(new Integer[]{5});
+//        list.add(new Integer[]{7, 8});
+//        list.add(new Integer[]{2, 3, 4});
+//        list.add(new Integer[]{4, 9, 6, 1});
+//        list.add(new Integer[]{2, 7, 9, 4, 5});
+//
+//        new DongtaiguihuaTest().shortestPath(list);
 
-        new DongtaiguihuaTest().shortestPath(list);
+        DongtaiguihuaTest test = new DongtaiguihuaTest();
+        test.leastCoinRecursion(0,0);
+        System.out.println(test.leastNum);
+
+        System.out.println(test.leastCoinPhase());
     }
+
+
+    // 回溯算法实现 - 定义状态 - 画递归树 - 找重复子问题 - 画状态转移表 - 根据递推关系填表 - 将填表过程翻译成代码。
+
+    // 硬币找零问题。假设我们有几种不同币值的硬币 v1，v2，……，vn（单位是元）。如果我们要支付 w 元，求最少需要多少个硬币。
+    // 比如，我们有 3 种不同的硬币，1 元、3 元、5 元，我们要支付 9 元，最少需要 3 个硬币（3 个 3 元的硬币）。
+
+    // 回溯
+    int[] coins = {1, 3, 5};
+    int pay = 9;
+    int leastNum;
+
+    // 重复的剔除
+    boolean[][] hasCal = new boolean[pay + 1][pay + 1];
+
+    private void leastCoinRecursion(int v, int count) {// 调用f(0, 0)
+        hasCal[v][count] = true;
+        if (v == pay) {
+            if (leastNum == 0 || leastNum > count) {
+                leastNum = count;
+            }
+            return;
+        }
+        int tmp;
+        for (int coin : coins) {
+            tmp = v + coin;
+            if (tmp <= pay) {
+                if (!hasCal[tmp][count + 1]) {
+                    leastCoinRecursion(tmp, count + 1);
+                }
+            }
+        }
+    }
+
+    // 动态规划
+
+    private int leastCoinPhase() {
+        // 第0阶段
+        boolean[] phase = new boolean[pay + 1];
+
+        phase[0] = true;
+
+        int k = 0;
+
+        int tmp;
+        while (!phase[pay]) {
+            for (int i = pay - 1; i >= 0; i--) {
+                if (phase[i]) {
+                    // 清除前一阶段
+                    phase[i] = false;
+                    // 填充后一阶段
+                    for(int coin : coins) {
+                        tmp = i + coin;
+                        if (tmp <= pay) {
+                            phase[tmp] = true;
+                        }
+                    }
+                }
+            }
+            k++;
+        }
+
+        return k;
+    }
+
 
 }
