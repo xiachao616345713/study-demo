@@ -124,12 +124,13 @@ public class DongtaiguihuaTest {
         while (!phase[pay] && k <= pay) {
             for (int i = pay - 1; i >= 0; i--) {
                 if (phase[i]) {
-                    // 清除前一阶段
+                    // clear before phase
                     phase[i] = false;
-                    // 填充后一阶段
+                    // fill current phase
                     for(int coin : coins) {
                         tmp = i + coin;
-                        if (tmp <= pay) {
+                        // Integer Max value
+                        if (tmp <= pay && tmp > 0) {
                             phase[tmp] = true;
                         }
                     }
