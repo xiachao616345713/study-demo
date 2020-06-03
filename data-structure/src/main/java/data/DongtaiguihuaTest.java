@@ -111,7 +111,7 @@ public class DongtaiguihuaTest {
         }
 
         // 动态规划
-        private int leastCoinPhase() {
+        private int leastCoinDp() {
             // 第0阶段
             boolean[] phase = new boolean[pay + 1];
 
@@ -150,7 +150,7 @@ public class DongtaiguihuaTest {
             test.leastCoinRecursion(0, 0);
             System.out.println(test.leastNum);
 
-            System.out.println(test.leastCoinPhase());
+            System.out.println(test.leastCoinDp());
         }
     }
 
@@ -185,7 +185,7 @@ public class DongtaiguihuaTest {
         // -> (0, 0),(1,3),(1,2),(2,3),(2,9)
         // (1,3)和(1,2)重复，(2,3)和(2,9)重复，去掉尾数大大
 
-        int calMaxSubSequencePhase() {
+        int calMaxSubSequenceDp() {
             int[] phase = new int[nums.length + 1];
 
             for (int i = 1; i <= nums.length; i++) {
@@ -227,7 +227,7 @@ public class DongtaiguihuaTest {
 
             System.out.println(test.maxSequence);
 
-            System.out.println("最长递增子序列的长度为" + test.calMaxSubSequencePhase());
+            System.out.println("最长递增子序列的长度为" + test.calMaxSubSequenceDp());
         }
     }
 
