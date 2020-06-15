@@ -42,6 +42,19 @@
       <version>4.1.41.Final</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>29.0-jre</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.db4j/kilim -->
+    <dependency>
+      <groupId>org.db4j</groupId>
+      <artifactId>kilim</artifactId>
+      <version>2.0.2</version>
+    </dependency>
+
   </dependencies>
 
   <build>

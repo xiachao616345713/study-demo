@@ -7,13 +7,12 @@ package data.structure;
 public class SingleLinkedList<T> {
 
     public SingleLinkedList() {
-        dummy = new Node();
     }
 
-    private Node dummy;
+    private Node head;
 
     public Node getHead() {
-        return dummy.next;
+        return head;
     }
 
     /**
@@ -21,8 +20,8 @@ public class SingleLinkedList<T> {
      */
     public boolean insertHead(T value) {
         Node node = new Node(value);
-        node.next = dummy.next;
-        dummy.next = node;
+        node.next = head;
+        head = node;
         return true;
     }
 
@@ -31,11 +30,15 @@ public class SingleLinkedList<T> {
      */
     public boolean insertTail(T value) {
         Node node = new Node(value);
-        Node tail = dummy;
-        while (tail.next != null) {
-            tail = tail.next;
+        if (head == null) {
+            head = node;
+            return true;
         }
-        tail.next = node;
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = node;
         return true;
     }
 
@@ -47,25 +50,24 @@ public class SingleLinkedList<T> {
     public boolean insertIndex(T value, int index) {
         Node pre = null;
         if (index > 0) {
-            pre = dummy;
-            for (int i = 1; i < index && pre.next != null; i++) {
+            pre = head;
+            for (int i = 1; i < index && pre != null; i++) {
                 pre = pre.next;
             }
         } else if (index < 0) {
-            Node fast = dummy;
-            for (int i = 0; i > index && fast.next != null; i--) {
+            Node fast = head;
+            for (int i = 0; i > index && fast != null; i--) {
                 fast = fast.next;
             }
-            if (fast.next == null) {
-                pre = dummy;
-            } else {
-                Node slow = dummy;
-                while (fast.next != null) {
-                    fast.next = fast.next.next;
-                    slow.next = slow.next.next;
-                }
-                pre = slow;
+            if (fast == null) {
+                return false;
             }
+            Node slow = head;
+            while (fast != null) {
+                fast = fast.next;
+                slow = slow.next;
+            }
+            pre = slow;
         }
         if (pre != null) {
             Node node = new Node(value);
@@ -83,34 +85,34 @@ public class SingleLinkedList<T> {
     public boolean reverse() {
         /*
          * method1 直接反转
-         * dummy->1->2->3->4
-         * step1: dummy->2->1->3->4
-         * step2: dummy->3->2->1->4
-         * step3: dummy->4->3->2->1
+         * 1->2->3->4
+         * step1: 2->1->3->4
+         * step2: 3->2->1->4
+         * step3: 4->3->2->1
          */
-        Node pre = dummy.next;
-        Node cur;
-        while (pre.next != null) {
-            cur = pre.next;
-            pre.next = cur.next;
-            cur.next = dummy.next;
-            dummy.next = cur;
+        Node temp;
+        Node cur = head;
+        while (cur.next != null) {
+            temp = cur.next;
+            cur.next = temp.next;
+            temp.next = head;
+            head = temp;
         }
         /*
          * method2 重新插入
-         * dummy->1->2->3->4
-         * step1: dummy->1
-         * step2: dummy->2->1
-         * step3: dummy->3->2->1
-         * step4: dummy->4->3->2->1
+         * 1->2->3->4
+         * step1: 1
+         * step2: 2->1
+         * step3: 3->2->1
+         * step4: 4->3->2->1
          */
-//        Node head = dummy.next;
-//        dummy.next = null;
-//        while (head != null) {
-//            head.next = dummy.next;
-//            dummy.next = head;
-//            head = head.next;
+//        Node temp = head;
+//        SingleLinkedList newList = new SingleLinkedList();
+//        while (temp != null) {
+//            newList.insertHead(temp);
+//            temp = temp.next;
 //        }
+//        head = newList.getHead();
 
         return true;
     }
@@ -119,12 +121,49 @@ public class SingleLinkedList<T> {
      * 中间节点
      */
     public Node middleNode() {
-        Node fast = dummy.next, slow = dummy.next;
+        Node fast = head, slow = head;
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
         }
         return slow;
+    }
+
+    /**
+     * 是否回文
+     */
+    public boolean isPalindrome() {
+        if (head == null || head.next == null) {
+            return false;
+        }
+        Node fast = head.next.next, slow = head, temp;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            // 反转
+            temp = slow.next;
+            slow.next = temp.next;
+            temp.next = head;
+            head = temp;
+        }
+        if (fast == null) {
+            // 偶数，直接对比
+            return palindromeCompare(head, slow.next);
+        } else {
+            // 基数，从下一个开始对比
+            return palindromeCompare(head, slow.next.next);
+        }
+    }
+
+    // 回文对比
+    private boolean palindromeCompare(Node head1, Node head2) {
+        while (head1 != null && head2 != null) {
+            if (!head1.value.equals(head2.value)) {
+                return false;
+            }
+            head1 = head1.next;
+            head2 = head2.next;
+        }
+        return true;
     }
 
     public class Node {
@@ -154,6 +193,11 @@ public class SingleLinkedList<T> {
         list.insertTail(2);
         list.insertTail(3);
         list.insertTail(4);
+//        list.insertTail(9);
+        list.insertTail(4);
+        list.insertTail(3);
+        list.insertTail(2);
+        list.insertTail(1);
 
         SingleLinkedList.Node node = list.getHead();
         while (node != null) {
@@ -165,6 +209,16 @@ public class SingleLinkedList<T> {
 
         System.out.println("======= reverse ======");
         list.reverse();
+        node = list.getHead();
+        while (node != null) {
+            System.out.println(node.getValue());
+            node = node.getNext();
+        }
+
+        System.out.println("======= palindrome ======");
+        System.out.println(list.isPalindrome());
+
+        System.out.println("======= travel ======");
         node = list.getHead();
         while (node != null) {
             System.out.println(node.getValue());

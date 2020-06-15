@@ -100,27 +100,23 @@ public class Sort {
         if (end <= start) return;
         //int q = swap(a, start, end, start + (end - start)/2);
         int q = swap(a, start, end, end);
-        if (q > 0) {
-            quickSort(a, start, q - 1);
-            quickSort(a, q + 1, end);
-        } else {
-            quickSort(a, 0 - q + 1, end);
-        }
+        quickSort(a, start, q - 1);
+        quickSort(a, q + 1, end);
     }
 
     /**
-     * <p>
-     *     6,11,3,9,8  a[p]=pivot=8,p=4
-     *     step1:6,11,3,9,8  a[i]=a[j]=6 (a[j]<8,swap a[i] a[j])
-     *     step2:6,11,3,9,8  a[i]=a[j]=11
-     *     step3:6,11,3,9,8  a[i]=11,a[j]=3 (a[j]<8,swap a[i] a[j])
-     *     step4:6,3,11,9,8  a[i]=11,a[j]=9
-     *     step5:6,3,11,9,8  a[i]=11,a[j]=8
-     *     final: swap a[i] a[p]  6,3,8,9,11
-     *     以8作为区分点，小于i坐标的数据为处理过的数据(即小于8的数据)，
-     *     最后交换a[i]和a[p]，pivot左侧数据小于pivot，pivot右侧数据大于等于pivot,
-     *     返回i为区分点位置
-     * </p>
+     * <pre>
+     * 6,11,3,9,8  a[p]=pivot=8,p=4
+     * step1:6,11,3,9,8  a[i]=a[j]=6 (a[j]<8,swap a[i] a[j])
+     * step2:6,11,3,9,8  a[i]=a[j]=11
+     * step3:6,11,3,9,8  a[i]=11,a[j]=3 (a[j]<8,swap a[i] a[j])
+     * step4:6,3,11,9,8  a[i]=11,a[j]=9
+     * step5:6,3,11,9,8  a[i]=11,a[j]=8
+     * final: swap a[i] a[p]  6,3,8,9,11
+     * 以8作为区分点，小于i坐标的数据为处理过的数据(即小于8的数据)，
+     * 最后交换a[i]和a[p]，pivot左侧数据小于pivot，pivot右侧数据大于等于pivot,
+     * 返回i为区分点位置
+     * </pre>
      */
     private int swap(int[] a, int start, int end, int p) {
         //int i = start, j = start;
@@ -134,14 +130,9 @@ public class Sort {
                 i++;
             }
         }
-        if (p > i) {
-            a[p] = a[i];
-            a[i] = pivot;
-            return i;
-        } else {
-            // 小于i的数据全部已经排序好了，为已经处理区间
-            return 0 - i;
-        }
+        a[p] = a[i];
+        a[i] = pivot;
+        return i;
     }
 
     /**
@@ -199,6 +190,12 @@ public class Sort {
 //        //sort.mergeSort(a, 0, a.length - 1);
 //        //sort.quickSort(a, 0, a.length - 1);
 //        sort.quickSort(a, 0, a.length - 1);
+
+        int[] a111= {9, 7,8,6, 10};
+        new Sort().quickSort(a111, 0, a111.length - 1);
+        for (int ai : a111) {
+            System.out.println(ai);
+        }
 
         int[] a = new int[64];
         for (int i = 0; i < a.length; i++) {
