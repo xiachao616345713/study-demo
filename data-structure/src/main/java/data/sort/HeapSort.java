@@ -18,6 +18,7 @@ public class HeapSort {
                 break;
             }
         }
+        // 从倒数第二层在最后一个root节点开始堆化，大顶堆
         for (int i = capacity/2 - 1; i >= 0; i--) {
             heapify(a, a.length, i);
         }
@@ -26,16 +27,20 @@ public class HeapSort {
     private static void heapify(int[] a, int length, int index) {
         int maxPos = index;
         while (true) {
+            // 左节点比对root，找出最大的
             int child = (index << 1) + 1;
             if (child < length && a[child] > a[index]) {
                 maxPos = child;
             }
+            // 左节点和root中大大对比又节点，找出最大的
             if (child + 1 < length && a[child + 1] > a[maxPos]) {
                 maxPos = child + 1;
             }
+            // root最大不动，中止
             if (maxPos == index) {
                 break;
             }
+            // 交换root和最大的字节点位置
             swap(a, index, maxPos);
             index = maxPos;
         }
