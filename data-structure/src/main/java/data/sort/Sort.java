@@ -98,8 +98,8 @@ public class Sort {
 
     public void quickSort(int[] a, int start, int end) {
         if (end <= start) return;
-        //int q = swap(a, start, end, start + (end - start)/2);
-        int q = swap(a, start, end, end);
+        //int q = quickSortSwap(a, start, end, start + (end - start)/2);
+        int q = quickSortSwap(a, start, end, end);
         quickSort(a, start, q - 1);
         quickSort(a, q + 1, end);
     }
@@ -118,7 +118,7 @@ public class Sort {
      * 返回i为区分点位置
      * </pre>
      */
-    private int swap(int[] a, int start, int end, int p) {
+    private int quickSortSwap(int[] a, int start, int end, int p) {
         //int i = start, j = start;
         int pivot = a[p];
         int i = start;
@@ -170,7 +170,7 @@ public class Sort {
          * 如：c[a[5]] = 9表示小于等于a[5]的值数据有9个，则将a[5]放到结果r中第9位即index=8的位置，同时将c[a[5]]减1
          */
         int[] r = new int[a.length];
-        for (int i = a.length - 1; i >= 0; i++) {
+        for (int i = a.length - 1; i >= 0; i--) {
             int cIndex = a[i] - min;
             int rIndex = c[cIndex] - 1;
             r[rIndex] = a[i];
@@ -182,7 +182,11 @@ public class Sort {
     }
 
     public static void main(String[] args) {
-        //int[] a = {3,5,8,2,3,1,8,9,11,3,5,5,5,5,5};
+//        int[] a = {3,5,8,2,3,1,8,9,11,3,5,5,5,5,5};
+//
+//        new Sort().countSort(a);
+//
+//        System.out.println(Arrays.toString(a));
 
 //        Sort sort = new Sort();
 //        //sort.bubbleSort(a);

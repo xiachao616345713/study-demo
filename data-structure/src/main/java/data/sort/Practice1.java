@@ -22,6 +22,8 @@ public class Practice1 {
                 if (a[j] < min) {
                     min = a[j];
                     x = j;
+                } else {
+                    break;
                 }
             }
             if (x != i) {

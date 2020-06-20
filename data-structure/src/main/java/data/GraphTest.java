@@ -1,8 +1,10 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,8 +36,6 @@ public class GraphTest {
         for (int i = 0; i < v; i++) {
             adj[i] = new LinkedList<>();
         }
-
-        convertToReverseAdj();
     }
 
     public void addEdge(int s, int t) {
@@ -105,38 +105,6 @@ public class GraphTest {
         }
     }
 
-    public void topoSortKahnUseReverseAdj() {
-        // 每个节点的出度,每个节点依赖项
-        int outdeep[] = new int[v];
-        for (int i = 0; i < reverseAdj.length; i++) {
-            outdeep[i] = reverseAdj[i].size();
-        }
-
-        Deque<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < outdeep.length; i++) {
-            if (outdeep[i] == 0) {
-                // 出度为0表示无依赖节点
-                queue.add(i);
-            }
-        }
-
-        while (!queue.isEmpty()) {
-            int w = queue.remove();
-            for (int i = 0; i < reverseAdj[w].size(); i++) {
-                // 获取依赖w的节点，减少出度
-                int k = reverseAdj[w].get(i);
-                if (--outdeep[k] == 0) {
-                    queue.add(k);
-                }
-            }
-            if (map != null) {
-                System.out.print("->" + map.get(w));
-            } else {
-                System.out.print("->" + w);
-            }
-        }
-    }
-
     // 拓补排序，dfs算法
     public void topoSortDfs() {
         boolean[] visited = new boolean[v];
@@ -158,6 +126,39 @@ public class GraphTest {
                 outputDfs(k, visited);
             }
         }
+        if (map != null) {
+            System.out.print("->" + map.get(i));
+        } else {
+            System.out.print("->" + i);
+        }
+    }
+
+    // 拓补排序，bfs算法
+    public void topoSortBfs() {
+        boolean[] visited = new boolean[v];
+
+        for (int i = 0; i < adj.length; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                outputBfs(i, visited);
+            }
+        }
+    }
+
+    private void outputBfs(int i, boolean[] visited) {
+        List<Integer> list = new ArrayList<>();
+        for (int j = 0; j < reverseAdj[i].size(); j++) {
+            int k = reverseAdj[i].get(j);
+            if (!visited[k]) {
+                // bfs 先表示已经访问，后续直接跳过访问
+                visited[k] = true;
+                list.add(k);
+            }
+        }
+        for (Integer item : list) {
+            outputBfs(item, visited);
+        }
+        // out put
         if (map != null) {
             System.out.print("->" + map.get(i));
         } else {
@@ -195,16 +196,18 @@ public class GraphTest {
         // 戴眼镜>打游戏
         test.addEdge(4, 8);
 
+        test.convertToReverseAdj();
+
         System.out.println("\r\n==============\r\n");
         test.topoSortKahn();
 
         System.out.println("\r\n==============\r\n");
 
-        test.topoSortKahnUseReverseAdj();
+        test.topoSortDfs();
 
         System.out.println("\r\n==============\r\n");
 
-        test.topoSortDfs();
+        test.topoSortBfs();
 
         System.out.println("\r\n==============\r\n");
 

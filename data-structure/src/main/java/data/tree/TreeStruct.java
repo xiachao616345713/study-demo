@@ -124,7 +124,7 @@ public class TreeStruct {
     }
 
     /**
-     * 前序遍历无递归
+     * 后序遍历无递归
      * @param node
      */
     private void travelAfterNoRecursion(TreeStruct node) {
