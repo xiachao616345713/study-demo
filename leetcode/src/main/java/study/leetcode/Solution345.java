@@ -11,9 +11,10 @@ import java.util.Set;
 public class Solution345 {
 
     public static void main(String[] args) {
+        String s = "leetcode";
+
         Set<Character> vowels = new HashSet<>();
         vowels.addAll(Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'));
-        String s = "leetcode";
 
         Character tmp = null;
         char[] chars = s.toCharArray();
