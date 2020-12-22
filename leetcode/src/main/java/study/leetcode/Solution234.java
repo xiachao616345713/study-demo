@@ -1,7 +1,7 @@
 package study.leetcode;
 
 /**
- * 单链表反转
+ * 单链表回文
  *
  * @author xiachao
  * @date 2020/12/21
