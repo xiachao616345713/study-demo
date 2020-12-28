@@ -136,7 +136,7 @@ public class TreeStruct {
             tmp = stack.pop();
 
             ret.push(tmp);
-            // 先入后出，stack左节先入，后压入结果栈，最后输出先输出(模拟递归)
+            // 先入后出，stack左节先入，后压入结果栈ret，最后输出先输出(模拟递归)
             if (tmp.getLeft() != null) {
                 stack.push(tmp.getLeft());
             }
