@@ -10,7 +10,7 @@ import java.util.List;
  * @author xiachao
  * @date 2020/06/01
  */
-public class DongtaiguihuaTest {
+public class DynamicProgrammingTest {
 
 
     static class TestShortestPath {
@@ -168,10 +168,10 @@ public class DongtaiguihuaTest {
             }
             for (int i = index; i < nums.length; i++) {
                 // 跳过当前，直接处理下一个
-                calMaxSubSequence(sequence, num, index + 1);
+                calMaxSubSequence(sequence, num, i + 1);
                 // 有序，可以有序+1，再处理下一个
-                if (num <= nums[index]) {
-                    calMaxSubSequence(sequence + 1, nums[index], index + 1);
+                if (num <= nums[i]) {
+                    calMaxSubSequence(sequence + 1, nums[i], i + 1);
                 }
             }
         }
@@ -192,23 +192,52 @@ public class DongtaiguihuaTest {
                 phase[i] = -1;
             }
 
-            int current;
-            for (int i = 0; i < nums.length; i++) {
-                current = nums[i];
+            for (int num : nums) {
                 // 最后一个num处理完，phase[nums.length]中才可能有值
                 for (int j = nums.length - 1; j >= 0; j--) {
                     // 有状态
                     if (phase[j] >= 0) {
                         // 尾数大于当前值，直接跳过
-                        if (phase[j] > current) {
+                        if (phase[j] > num) {
                             // 跳过处理
                             continue;
                         }
                         // 尾数小于当前值 temp <= nums[i]，同时下一阶段尾数取小的
-                        if (phase[j + 1] < 0 || phase[j + 1] > current) {
+                        if (phase[j + 1] < 0 || phase[j + 1] > num) {
                             // 序列+1，尾数变更
-                            phase[j + 1] = current;
+                            phase[j + 1] = num;
                         }
+                    }
+                }
+            }
+
+            for (int i = nums.length; i > 0; i--) {
+                if (phase[i] > 0) {
+                    return i;
+                }
+            }
+            return 1;
+        }
+
+        int calMaxSubSequenceDpTest() {
+            int[] phase = new int[nums.length + 1];
+
+            for (int num : nums) {
+                // 最后一个num处理完，phase[nums.length]中才可能有值
+                for (int j = nums.length - 1; j >= 0; j--) {
+                    // 无状态
+                    if (phase[j] == 0 && j != 0) {
+                        continue;
+                    }
+                    // 尾数大于当前值，直接跳过
+                    if (phase[j] > num) {
+                        // 跳过处理
+                        continue;
+                    }
+                    // 尾数小于当前值 temp <= nums[i]，同时下一阶段尾数取小的
+                    if (phase[j + 1] == 0 || phase[j + 1] > num) {
+                        // 序列+1，尾数变更
+                        phase[j + 1] = num;
                     }
                 }
             }
@@ -223,12 +252,42 @@ public class DongtaiguihuaTest {
 
         public static void main(String[] args) {
             TestCalMaxSequence test = new TestCalMaxSequence();
-            test.calMaxSubSequence(1, test.nums[0], 1);
+            test.calMaxSubSequence(0, -1, 0);
 
             System.out.println(test.maxSequence);
 
             System.out.println("最长递增子序列的长度为" + test.calMaxSubSequenceDp());
+
+            System.out.println("最长递增子序列的长度为" + test.calMaxSubSequenceDpTest());
         }
+    }
+
+    static class TestLongestPalindromeSubStr {
+        // 最长回文字串
+        String longestPalindromeSubStr(String str) {
+            int length = str.length();
+            boolean[][] dp = new boolean[length][length];
+            char[] chars = str.toCharArray();
+            String ret = null;
+
+            for (int i = length - 1; i >= 0; i--) {
+                for (int j = i; j < length; j++) {
+                   dp[i][j] = chars[i] == chars[j] && (j - i < 3 || dp[i + 1][j - 1]);
+                   if (dp[i][j] && (ret == null || (j - i + 1) > ret.length())) {
+                       ret = str.substring(i, j + 1);
+                   }
+                }
+            }
+
+            return ret;
+        }
+
+        public static void main(String[] args) {
+            TestLongestPalindromeSubStr test = new TestLongestPalindromeSubStr();
+
+            System.out.println(test.longestPalindromeSubStr("bgcabcbacbaxacgb"));
+        }
+
     }
 
 
