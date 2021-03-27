@@ -49,6 +49,7 @@ public class Solution47 {
             // 重复判断，i>0保证从第二个元素开始；
             // temp=nums[i - 1]保证连续2个相等，其中nums已经排序了；
             // !used[i - 1]保证上1个元素未用，如果使用了就是其中1个需要的结果（如，1、1、2，到第二个1时，第1个1已经使用是需要的结果）
+            // 按顺序走下去，如果used[i - 1] = false表示上一轮使用used[i - 1]使用并且递归结束了回溯成了used[i - 1]=false，当前处理不需要再重复处理一次
             if (i > 0 && temp == nums[i - 1] && !used[i - 1]) continue;
             used[i] = true;
             list.add(temp);

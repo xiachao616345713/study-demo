@@ -17,10 +17,10 @@ public class TopoSortTest {
     private int v;
 
     // 邻接表
-    private LinkedList<Integer> adj[];
+    private LinkedList<Integer>[] adj;
 
     // 依赖表（邻接表反转）
-    private LinkedList<Integer> reverseAdj[];
+    private LinkedList<Integer>[] reverseAdj;
 
     private Map<Integer, String> map;
 
@@ -72,7 +72,7 @@ public class TopoSortTest {
     // 拓补排序kahn算法，贪心算法
     public void topoSortKahn() {
         // 每个节点的入度
-        int indeep[] = new int[v];
+        int[] indeep = new int[v];
         for (int i = 0; i < adj.length; i++) {
             for (int j = 0; j < adj[i].size(); j++) {
                 int k = adj[i].get(j);

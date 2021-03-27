@@ -117,6 +117,17 @@ public class SingleLinkedList<T> {
         return true;
     }
 
+    public void reverse1() {
+        Node node = head;
+        Node tmp;
+        while (node.next != null) {
+            tmp = node.next;
+            node.next = node.next.next;
+            tmp.next = head;
+            head = tmp;
+        }
+    }
+
     /**
      * 中间节点
      */
@@ -152,6 +163,31 @@ public class SingleLinkedList<T> {
             // 基数，从下一个开始对比
             return palindromeCompare(head, slow.next.next);
         }
+    }
+
+    public boolean isPalindrome1() {
+        Node slow = head, fast = head;
+        Node tmp;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            tmp = slow.next;
+            slow.next = slow.next.next;
+            tmp.next = head;
+            head = tmp;
+        }
+        slow = slow.next;
+        if (fast != null) {
+            // 奇数
+            head = head.next;
+        }
+        while (slow != null) {
+            if (!slow.value.equals(head.value)) {
+                return false;
+            }
+            slow = slow.next;
+            head = head.next;
+        }
+        return true;
     }
 
     // 回文对比
@@ -193,7 +229,7 @@ public class SingleLinkedList<T> {
         list.insertTail(2);
         list.insertTail(3);
         list.insertTail(4);
-//        list.insertTail(9);
+        list.insertTail(9);
         list.insertTail(4);
         list.insertTail(3);
         list.insertTail(2);
@@ -208,7 +244,7 @@ public class SingleLinkedList<T> {
         System.out.println(list.middleNode().getValue());
 
         System.out.println("======= reverse ======");
-        list.reverse();
+        list.reverse1();
         node = list.getHead();
         while (node != null) {
             System.out.println(node.getValue());

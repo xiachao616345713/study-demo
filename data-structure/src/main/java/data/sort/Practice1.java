@@ -99,13 +99,49 @@ public class Practice1 {
         } while (!queue.isEmpty());
     }
 
+    // 2020-1-4练习,找到第k大的元素
+    public int findK3(int[] a, int k) {
+        int start = 0;
+        int end = a.length - 1;
+
+        while (true) {
+            int povit = a[end];
+            int j = start;
+            for (int i = start; i < end; i++) {
+                if (a[i] < povit) {
+                    swap(a, i, j);
+                    j++;
+                }
+            }
+            if (j == k) {
+                return a[end];
+            }
+
+            swap(a, j, end);
+
+            if (j > k) {
+                end = j - 1;
+            } else {
+                start = j + 1;
+            }
+        }
+    }
+
+    private void swap(int[] a, int i, int j) {
+        int tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+
 
     public static void main(String[] args) {
         int[] a = {2, 1, 3, 1, 5, 6, 8, 7, 11, 4, 2};
         //System.out.println(new Practice1().findK(a, 3));
         //System.out.println(new Practice1().findK2(a, 4));
 
-        new Practice1().quickSort(a);
+        System.out.println(new Practice1().findK3(a, 4));
+
+        // new Practice1().quickSort(a);
 
         System.out.println(JSON.toJSONString(a));
 

@@ -9,22 +9,6 @@ import java.util.Stack;
  */
 public class Solution214 {
 
-    public static void main(String[] args) {
-        //System.out.println(new Solution214().shortestPalindrome("aacecaaa"));
-        //System.out.println(new Solution214().shortestPalindrome("abcbabcaba"));
-
-        // System.out.println("aaaaabc".indexOf("abc"));
-
-        //System.out.println(new Solution214().shortestPalindrome2("abcd"));
-
-        System.out.println(new Solution214().shortestPalindrome3("abcbabcaba"));
-        System.out.println(new Solution214().shortestPalindrome2("abcbabcaba"));
-        int[] f = new Solution214().calculateTable("abcbabcaba");
-        System.out.println();
-
-        //System.out.println(new Solution214().indexSubStr("BBC ABCDAB ABCDABCDABDE", "ABCDABD"));
-    }
-
     public String shortestPalindrome(String s) {
         String result = null;
         Stack<Character> stack = new Stack<>();
@@ -185,8 +169,13 @@ public class Solution214 {
                     // 假设到b不匹配，b之前匹配度为caca即t，t=4
                     // 拿caca继续找匹配度(索引从0开始)t=f[t-1]=f[3]=2，s[t]=s[2]=c≠b
                     // 拿ca继续找t=f[t-1]=f[1]=0匹配度为0结束
+                    /**
+                     * t不匹配，t之前的匹配的内容就是索引[0,t-1]
+                     * 看t-1的匹配度f[t-1]，如果等于2那表示索引[0,1]是匹配的，比较索引[2]即当前匹配度，的值是否相等
+                     * 不相等继续处理，匹配度为0是比较第一位即可
+                     */
                     t = f[t - 1];
-                    if (t > 0) {
+                    if (t >= 0) {
                         if (temp == subStr.charAt(t)) {
                             f[i] = ++t;
                             break;
@@ -196,5 +185,26 @@ public class Solution214 {
             }
         }
         return f;
+    }
+
+    public static void main(String[] args) {
+        //System.out.println(new Solution214().shortestPalindrome("aacecaaa"));
+        //System.out.println(new Solution214().shortestPalindrome("abcbabcaba"));
+
+        // System.out.println("aaaaabc".indexOf("abc"));
+
+        //System.out.println(new Solution214().shortestPalindrome2("abcd"));
+
+        System.out.println(new Solution214().shortestPalindrome3("abcbabcaba"));
+        System.out.println(new Solution214().shortestPalindrome2("abcbabcaba"));
+        int[] f = new Solution214().calculateTable("abcbabcaba");
+        System.out.println();
+
+        //System.out.println(new Solution214().indexSubStr("BBC ABCDAB ABCDABCDABDE", "ABCDABD"));
+
+        System.out.println(Arrays.toString(new Solution214().calculateTable("aacbaaca")));
+        System.out.println(Arrays.toString(new Solution214().calculateTable("abcbabca")));
+        System.out.println(Arrays.toString(new Solution214().calculateTable("cacbcaca")));
+        System.out.println(Arrays.toString(new Solution214().calculateTable("aacbaacc")));
     }
 }
