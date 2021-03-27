@@ -166,9 +166,8 @@ public class BSearch {
         int[] a = {3, 5, 8, 2, 43, 1, 8, 9, 25, 25, 25, 25, 11, 33, 25, 22, 15, 43, 35, 25, 91, 99};
 
         Arrays.sort(a);
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(a[i] + ",");
-        }
+
+        System.out.println(Arrays.toString(a));
         System.out.println("==============");
 
         System.out.println(bSearch(a, 0, a.length - 1, 25));
@@ -177,7 +176,114 @@ public class BSearch {
         System.out.println(bSearchGreatNumberFirst(a, 0, a.length - 1, 25));
         System.out.println(bSearchLessNumberLast(a, 0, a.length - 1, 25));
 
+        System.out.println("=====2021-03-27=========");
+        System.out.println(bSearch1(a, 25));
+        System.out.println(bSearchFirstNumber1(a, 25));
+        System.out.println(bSearchLastNumber1(a, 25));
+        System.out.println(bSearchGreatNumberFirst1(a, 25));
+        System.out.println(bSearchLessNumberLast1(a, 25));
+
+
 //        System.out.println(sqrt(3, 1));
+    }
+
+    private static int bSearch1(int[] a, int number) {
+        int low = 0, high = a.length - 1;
+        while (high >= low) {
+            int middle = low + (high - low) / 2;
+            if (a[middle] == number) {
+                return middle;
+            }
+            if (a[middle] < number) {
+                low = middle + 1;
+            } else {
+                high = middle -1;
+            }
+        }
+
+        return -1;
+    }
+
+    private static int bSearchFirstNumber1(int[] a, int number) {
+        int low = 0, high = a.length - 1;
+        while (high >= low) {
+            int middle = low + (high - low) / 2;
+            if (a[middle] == number) {
+                if (middle == 0 || a[middle - 1] != number) {
+                    return middle;
+                }
+                high = middle - 1;
+            } else if (a[middle] < number) {
+                low = middle + 1;
+            } else {
+                high = middle -1;
+            }
+        }
+
+        return -1;
+    }
+
+    private static int bSearchLastNumber1(int[] a, int number) {
+        int low = 0, high = a.length - 1;
+        while (high >= low) {
+            int middle = low + (high - low) / 2;
+            if (a[middle] == number) {
+                if (middle == a.length - 1 || a[middle + 1] != number) {
+                    return middle;
+                }
+                low = middle + 1;
+            } else if (a[middle] < number) {
+                low = middle + 1;
+            } else {
+                high = middle -1;
+            }
+        }
+
+        return -1;
+    }
+
+    private static int bSearchGreatNumberFirst1(int[] a, int number) {
+        int low = 0, high = a.length - 1;
+        while (high >= low) {
+            int middle = low + (high - low) / 2;
+            if (a[middle] == number) {
+                if (middle == a.length - 1) {
+                    return -1;
+                }
+                if (a[middle + 1] != number) {
+                    return middle + 1;
+                }
+                low = middle + 1;
+            } else if (a[middle] < number) {
+                low = middle + 1;
+            } else {
+                high = middle -1;
+            }
+        }
+
+        return -1;
+    }
+
+    private static int bSearchLessNumberLast1(int[] a, int number) {
+        int low = 0, high = a.length - 1;
+        while (high >= low) {
+            int middle = low + (high - low) / 2;
+            if (a[middle] == number) {
+                if (middle == 0) {
+                    return 0;
+                }
+                if (a[middle - 1] != number) {
+                    return middle - 1;
+                }
+                high = middle - 1;
+            } else if (a[middle] < number) {
+                low = middle + 1;
+            } else {
+                high = middle -1;
+            }
+        }
+
+        return -1;
     }
 
 }
