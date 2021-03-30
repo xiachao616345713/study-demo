@@ -190,6 +190,27 @@ public class SingleLinkedList<T> {
         return true;
     }
 
+    public void deleteReverseNode(int n) {
+        Node node = head;
+        while (n > 0 && node != null) {
+            node = node.next;
+            n--;
+        }
+        if (n > 0) {
+            return;
+        }
+        if (node == null) {
+            head = head.next;
+            return;
+        }
+        Node tmp = head;
+        while (node.next != null) {
+            node = node.next;
+            tmp = tmp.next;
+        }
+
+    }
+
     // 回文对比
     private boolean palindromeCompare(Node head1, Node head2) {
         while (head1 != null && head2 != null) {
