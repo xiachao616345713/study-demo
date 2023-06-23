@@ -1,8 +1,11 @@
 package study.test1.reference;
 
+import java.io.RandomAccessFile;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class PhantomReferencesTest {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         // 常量不会被回收，使用new String("abc")可以
 //        String abc = "abc";
 //        String abc = new String("abc");
@@ -82,26 +85,52 @@ public class PhantomReferencesTest {
 //        }
 
         // 使用对象持有phantomReference对象
-        ReferenceQueue referenceQueue = new ReferenceQueue<>();
-        Test abc = new Test();
-        new Thread(() -> {
-            Test t = new Test();
-            abc.setReference(new PhantomReference<>(t, referenceQueue));
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+//        ReferenceQueue referenceQueue = new ReferenceQueue<>();
+//        Test abc = new Test();
+//        new Thread(() -> {
+//            Test t = new Test();
+//            abc.setReference(new PhantomReference<>(t, referenceQueue));
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
+//
+//        Thread.sleep(1500);
+//        System.gc();
+//
+//        Thread.sleep(1000);
+//
+//        Reference reference = referenceQueue.poll();
+//        if (reference != null) {
+//            System.out.println(reference.toString());
+//        }
 
-        Thread.sleep(1500);
-        System.gc();
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(100);
 
-        Thread.sleep(1000);
+        RandomAccessFile file = new RandomAccessFile("/Users/chaoxia/Desktop/tmp", "rw");
+        FileChannel fileChannel = file.getChannel();
 
-        Reference reference = referenceQueue.poll();
-        if (reference != null) {
-            System.out.println(reference.toString());
+        StringBuilder sb = new StringBuilder();
+        int bytesRead = fileChannel.read(byteBuffer);
+        while (bytesRead != -1) {
+            byteBuffer.flip();
+
+            byte[] bytes = new byte[byteBuffer.remaining()];
+            byteBuffer.get(bytes);
+            sb.append(new String(bytes));
+
+            byteBuffer.clear();
+
+            bytesRead = fileChannel.read(byteBuffer);
         }
+
+        fileChannel.close();
+        file.close();
+
+        ((sun.nio.ch.DirectBuffer)byteBuffer).cleaner();
+
+        System.out.println(sb);
     }
 }

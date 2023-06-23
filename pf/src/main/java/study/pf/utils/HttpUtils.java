@@ -9,6 +9,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import javax.net.ssl.SSLContext;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
@@ -28,6 +29,7 @@ import org.apache.http.util.EntityUtils;
  * @author chao
  * @since 2018-04-19
  */
+@Slf4j
 public class HttpUtils {
 
     private static SSLContext sslContextTLS2 = null;
@@ -90,6 +92,10 @@ public class HttpUtils {
      * https post request
      */
     public static String doHttpsGet(String url, Map<String, String> params, String charset) {
+        return doHttpsGet(url, params, charset, null);
+    }
+
+    public static String doHttpsGet(String url, Map<String, String> params, String charset, Map<String, String> headers) {
         /*
          * append url
          */
@@ -118,6 +124,9 @@ public class HttpUtils {
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(getSSLContextTLS2());
         CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
         HttpGet httpGet = new HttpGet(buffer.toString());
+        if (headers != null && !headers.isEmpty()) {
+            headers.forEach(httpGet::setHeader);
+        }
         try {
             CloseableHttpResponse response = client.execute(httpGet);
             int httpStatus = response.getStatusLine().getStatusCode();
@@ -126,10 +135,10 @@ public class HttpUtils {
                     return IOUtils.toString(in, charset);
                 }
             } else {
-                //log.error("https get fail:statusCode:" + httpStatus);
+                log.error("https get fail:statusCode:" + httpStatus);
             }
         } catch (IOException e) {
-            //log.error("执行Get请求" + url + "时，发生异常！", e);
+             log.error("执行Get请求" + url + "时，发生异常！", e);
         }
         return null;
     }
@@ -158,8 +167,8 @@ public class HttpUtils {
                 } finally {
                     response.close();
                 }
-            }else{
-            	//log.error("https get fail:statusCode:" + httpStatus);
+            } else {
+            	log.error("https get fail:statusCode:" + httpStatus);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -168,6 +177,50 @@ public class HttpUtils {
                 httpclient.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+        return content;
+    }
+
+    public static String postBodyWithHeaders(String url, String body, Map<String, String> headers) {
+        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(getSSLContextTLS2());
+        CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
+//        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+//        // 实例化httpClient
+//        CloseableHttpClient httpclient = HttpClients.createDefault();
+        // 实例化post方法
+        HttpPost httpPost = new HttpPost(url);
+        // 结果
+        CloseableHttpResponse response = null;
+        String content = null;
+        if (headers != null && !headers.isEmpty()) {
+            headers.forEach(httpPost::setHeader);
+        }
+        try {
+            // 将参数给post方法
+            if (body != null) {
+                StringEntity stringEntity = new StringEntity(body , "UTF-8");
+                httpPost.setEntity(stringEntity);
+            }
+            // 执行post方法
+            response = httpclient.execute(httpPost);
+            int httpStatus = response.getStatusLine().getStatusCode();
+            if (httpStatus == HttpStatus.SC_OK) {
+                try {
+                    content = EntityUtils.toString(response.getEntity(), "UTF-8");
+                } finally {
+                    response.close();
+                }
+            }else{
+                log.error("https get fail:statusCode:" + httpStatus);
+            }
+        } catch (IOException e) {
+            log.error("", e);
+        } finally {
+            try {
+                httpclient.close();
+            } catch (IOException e) {
+                log.error("", e);
             }
         }
         return content;
